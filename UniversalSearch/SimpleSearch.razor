@@ -1,0 +1,108 @@
+﻿<Addons>
+    <Addon AddonType="AddonType.Body">
+        <TextEdit Size="@Size" @bind-text="_searchedText" Placeholder="@SearchPlaceHolder" />
+    </Addon>
+    <Addon AddonType="AddonType.End">
+        <Button Loading="_clearing" Disabled="@(_searching || _clearing)" @onclick="ClearSearch" Color="Color.Secondary">
+            @if (!_clearing)
+            {
+                <Icon Name="IconName.Clear" />
+            }
+
+        </Button>
+    </Addon>
+    <Addon AddonType="AddonType.End">
+        <Button Size="@SearchButtonSize" Disabled="@(_searching || _clearing)" Loading="@_searching" Color="Color.Secondary" @onclick="Search">
+            @if (!_searching)
+            {
+                <Icon Name="IconName.Search" />
+            }
+
+        </Button>
+    </Addon>
+
+
+</Addons>
+
+
+@code {
+
+    private string _searchedText = "";
+
+
+    [Parameter]
+    public string SearchPlaceHolder { get; set; } = "";
+
+    [Parameter]
+    public bool Loading { get; set; } = false;
+
+
+    [Parameter]
+    public EventCallback<string> OnSearch { get; set; }
+
+    [Parameter]
+    public EventCallback<Exception> OnError { get; set; }
+
+    [Parameter]
+    public EventCallback OnClear { get; set; }
+
+    [Parameter]
+    public Size Size { get; set; } = Size.None;
+
+    [Parameter]
+    public ButtonSize SearchButtonSize { get; set; } = ButtonSize.None;
+
+    public async Task Search()
+    {
+        try
+        {
+            _searching = true;
+            await OnSearch.InvokeAsync(_searchedText);
+        }
+        catch (Exception e)
+        {
+            await OnError.InvokeAsync(e);
+        }
+        finally
+        {
+            _searching = false;
+        }
+
+
+
+
+
+    }
+
+    bool _clearing = false;
+    bool _searching = false;
+
+    public async Task ClearSearch()
+    {
+        _searchedText = "";
+        try
+        {
+            _clearing = true;
+            if (OnClear.HasDelegate)
+            {
+                await OnClear.InvokeAsync(null);
+            }
+            else
+            {
+                await OnSearch.InvokeAsync("");
+            }
+
+        }
+        catch (Exception e)
+        {
+            await OnError.InvokeAsync(e);
+        }
+        finally
+        {
+            _clearing = false;
+        }
+
+
+
+    }
+}

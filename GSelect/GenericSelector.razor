@@ -5,20 +5,23 @@
     {
         <SelectItem Value="-1">@SelectMessage</SelectItem>
     }
+    
 
-    @foreach (var item in _items)
+    @foreach (var item in Items)
     {
         if (ChildContent!=null)
         {
-            <SelectItem Value="@(_items.IndexOf(item))">@(ChildContent(item))</SelectItem>
+            <SelectItem Value="@(Items.IndexOf(item))">@(ChildContent(item))</SelectItem>
         }
         else
         {
-            <SelectItem Value="@(_items.IndexOf(item))">@(item.ToString())</SelectItem>
+            <SelectItem Value="@(Items.IndexOf(item))">@(item.ToString())</SelectItem>
         }
         //<SelectItem Value="@(_items.IndexOf(item))">@Display(item)</SelectItem>
         
     }
+    
+
 </Select>
 
 @code {
@@ -27,7 +30,7 @@
     [Parameter]
     public IEnumerable<TItem> Data { get; set; }=new List<TItem>();
 
-    List<TItem> _items => Data.ToList();
+    List<TItem> Items => Data.ToList();
 
 
     [Parameter]
