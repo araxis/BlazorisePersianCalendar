@@ -6,19 +6,19 @@
     <CardHeader >
         <Row  >
             <Column ColumnSize="ColumnSize.Is1">
-                <Button   Size="Size.Small" Clicked="Prev" Float="Float.Left">@("<")</Button>
+                <Button   Size="Size.Small" Clicked="Prev" Float="Float.Right">@("<")</Button>
             </Column>
-            <Column Class="text-center">              
-                    @($"{_currentDate.GetPersianMonth().GetPersianMonthName()} {_currentDate.GetPersianYear().ToPersianNumbers()} ")
+            <Column >              
+                   @($"{_currentDate.GetPersianMonth().GetPersianMonthName()} {_currentDate.GetPersianYear().ToPersianNumbers()} ")
             </Column>
             <Column  ColumnSize="ColumnSize.Is1">
-                <Button   Size="Size.Small" Clicked="Nex" Float="Float.Right">></Button>
+                <Button   Size="Size.Small" Clicked="Nex" Float="Float.Left">></Button>
             </Column>
         </Row>
        
     </CardHeader>
-    <CardBody Padding="Padding.Is0">
-        <Table  Class="align-content-center" Narrow="true" Borderless="true" Padding="Padding.Is0"  Responsive="true">
+    <CardBody Padding="Padding.Is1">
+        <Table   Narrow="true" Borderless="true" Padding="Padding.Is0"  Responsive="true">
             <TableHeader ThemeContrast="ThemeContrast.Light">
                 <TableRow>
                     @foreach (var value in _weekDayNames)
@@ -38,10 +38,10 @@
                             {
                                 var dayOfWeek = j;
                                 var date = _startDate.AddDays((week * 7) + dayOfWeek);
-                                var bgColor = date.DayOfYear == DateTime.Now.DayOfYear ? Background.Info : Background.None;
-                              
-                              
-                                <TableRowCell Style="cursor: pointer" TextAlignment="TextAlignment.Center" Background="@bgColor" Clicked="@(async () => await SelectDate(date))">
+                                var bgColor = date.DayOfYear == DateTime.Now.DayOfYear ? Background.Success : Background.None;
+                                var todayColor = date.DayOfYear == SelectedDate.DayOfYear ? TextColor.Warning : TextColor.Black50;
+
+                                <TableRowCell Style="cursor: pointer" TextColor="todayColor" TextAlignment="TextAlignment.Center" Background="@bgColor" Clicked="@(async () => await SelectDate(date))">
                                     @if (date.GetPersianMonth() == _currentDate.GetPersianMonth())
                                     {
                                         @($"{date.GetPersianDayOfMonth().ToPersianNumbers()}")
@@ -66,10 +66,10 @@
 @code {
 
     readonly IEnumerable<string> _weekDayNames=new List<string>{"ش","ی","د","س","چ","پ","ج"};
-   
+    //new DateTime(0622,3,3)
 
     [Parameter]
-    public DateTime SelectedDate { get; set; } = DateTime.Now;
+    public DateTime SelectedDate { get; set; } =DateTime.Now;
 
     DateTime _currentDate = DateTime.Now;
 
@@ -84,8 +84,21 @@
     protected override void OnInitialized()
     {
         // base.OnInitialized();
+        if (SelectedDate == DateTime.MinValue)
+        {
+            SelectedDate = DateTime.Now;
+            _currentDate=DateTime.Now;
+        }
         _currentDate = SelectedDate;
-        InitMonth(SelectedDate);
+        InitMonth(_currentDate);
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (SelectedDate != DateTime.MinValue) return;
+        SelectedDate = DateTime.Now;
+        _currentDate=DateTime.Now;
     }
 
     private void InitMonth(DateTime date)
@@ -98,7 +111,7 @@
         var endDate = monthInfo.EndDate;
         var days = (endDate - _startDate).Days;
         _rows = (days / 7) + 1;
-     
+
     }
 
     async Task SelectDate(DateTime date)

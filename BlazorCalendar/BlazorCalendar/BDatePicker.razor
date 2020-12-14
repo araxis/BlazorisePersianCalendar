@@ -2,7 +2,7 @@
     <Addons>
 
         <Addon AddonType="AddonType.Body">
-            <TextEdit Disabled Text="@Date.ToShortPersianDateString().ToPersianNumbers()" />
+            <TextEdit Disabled Text="@(Date.ToShortPersianDateString().ToPersianNumbers())" />
         </Addon>
         <Addon AddonType="AddonType.Start">
             <Button Clicked="()=>_dropdown.Toggle()" Color="Color.Secondary">
@@ -51,5 +51,24 @@
 
         }
 
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            if (Date == DateTime.MinValue)
+            {
+                Date = DateTime.Now;
+               
+            }
+        }
+
+        protected override void OnParametersSet()
+        {
+            base.OnParametersSet();
+            if (Date == DateTime.MinValue)
+            {
+                Date = DateTime.Now;
+               
+            }
+        }
 
     }
