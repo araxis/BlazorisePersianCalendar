@@ -1,0 +1,55 @@
+﻿@using DNTPersianUtils.Core
+    <Addons>
+
+        <Addon AddonType="AddonType.Body">
+            <TextEdit Disabled Text="@Date.ToShortPersianDateString().ToPersianNumbers()" />
+        </Addon>
+        <Addon AddonType="AddonType.Start">
+            <Button Clicked="()=>_dropdown.Toggle()" Color="Color.Secondary">
+                <Icon Name="IconName.CalendarDay"></Icon>
+            </Button>
+            
+        </Addon>
+        <Dropdown Disabled="Disabled" @ref="@_dropdown">
+
+            <DropdownMenu Padding="Padding.Is0">
+                <BCalender SelectedDate="@Date" SelectedDateChanged="OnDateChanged" />
+
+            </DropdownMenu>
+        </Dropdown>
+    </Addons>
+
+
+
+
+
+
+
+    @code {
+        Dropdown _dropdown;
+
+        [Parameter]
+        public DateTime Date { get; set; } = DateTime.Now;
+
+        [Parameter]
+        public EventCallback<DateTime> DateChanged { get; set; }
+
+        [Parameter]
+        public bool Disabled { get; set; }
+
+        void ToggleCalender()
+        {
+            _dropdown.Toggle();
+
+        }
+
+        async Task OnDateChanged(DateTime date)
+        {
+            Date = date;
+            _dropdown.Hide();
+            await DateChanged.InvokeAsync(date);
+
+        }
+
+
+    }

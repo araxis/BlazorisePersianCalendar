@@ -1,0 +1,123 @@
+﻿
+@using DNTPersianUtils.Core
+
+
+<Card>
+    <CardHeader >
+        <Row  >
+            <Column ColumnSize="ColumnSize.Is1">
+                <Button   Size="Size.Small" Clicked="Prev" Float="Float.Left">@("<")</Button>
+            </Column>
+            <Column Class="text-center">              
+                    @($"{_currentDate.GetPersianMonth().GetPersianMonthName()} {_currentDate.GetPersianYear().ToPersianNumbers()} ")
+            </Column>
+            <Column  ColumnSize="ColumnSize.Is1">
+                <Button   Size="Size.Small" Clicked="Nex" Float="Float.Right">></Button>
+            </Column>
+        </Row>
+       
+    </CardHeader>
+    <CardBody Padding="Padding.Is0">
+        <Table  Class="align-content-center" Narrow="true" Borderless="true" Padding="Padding.Is0"  Responsive="true">
+            <TableHeader ThemeContrast="ThemeContrast.Light">
+                <TableRow>
+                    @foreach (var value in _weekDayNames)
+                    {
+                        <TableHeaderCell TextAlignment="TextAlignment.Center" >@value</TableHeaderCell>
+                    }
+                   
+                </TableRow>
+            </TableHeader>
+            <TableBody Padding="Padding.Is0">
+                @for (var i = 0; i < _rows; i++)
+                {
+                    var week = i;
+                    <TableRow>
+
+                            @for (var j = 0; j <= 6; j++)
+                            {
+                                var dayOfWeek = j;
+                                var date = _startDate.AddDays((week * 7) + dayOfWeek);
+                                var bgColor = date.DayOfYear == DateTime.Now.DayOfYear ? Background.Info : Background.None;
+                              
+                              
+                                <TableRowCell Style="cursor: pointer" TextAlignment="TextAlignment.Center" Background="@bgColor" Clicked="@(async () => await SelectDate(date))">
+                                    @if (date.GetPersianMonth() == _currentDate.GetPersianMonth())
+                                    {
+                                        @($"{date.GetPersianDayOfMonth().ToPersianNumbers()}")
+                                    }
+                                   
+                                </TableRowCell>
+                            }
+                        
+                    </TableRow>
+                    <Row>
+                     
+                    </Row>
+                }
+            </TableBody>
+        </Table>
+
+
+
+    </CardBody>
+</Card>
+
+@code {
+
+    readonly IEnumerable<string> _weekDayNames=new List<string>{"ش","ی","د","س","چ","پ","ج"};
+   
+
+    [Parameter]
+    public DateTime SelectedDate { get; set; } = DateTime.Now;
+
+    DateTime _currentDate = DateTime.Now;
+
+    [Parameter]
+    public EventCallback<DateTime> SelectedDateChanged { get; set; }
+
+
+    DateTime _startDate;
+
+    int _rows;
+
+    protected override void OnInitialized()
+    {
+        // base.OnInitialized();
+        _currentDate = SelectedDate;
+        InitMonth(SelectedDate);
+    }
+
+    private void InitMonth(DateTime date)
+    {
+        _rows = 0;
+        var monthInfo = date.GetPersianMonthStartAndEndDates();
+        var startWeekDay = monthInfo.StartDate.PersianDayOfWeek();
+        var diff = (startWeekDay - 0);
+        _startDate = monthInfo.StartDate.AddDays(-(diff));
+        var endDate = monthInfo.EndDate;
+        var days = (endDate - _startDate).Days;
+        _rows = (days / 7) + 1;
+     
+    }
+
+    async Task SelectDate(DateTime date)
+    {
+        await SelectedDateChanged.InvokeAsync(date);
+    }
+
+    void Prev()
+    {
+        _currentDate = _currentDate.AddMonths(-1);
+        InitMonth(_currentDate);
+
+    }
+
+    void Nex()
+    {
+        _currentDate = _currentDate.AddMonths(1);
+        InitMonth(_currentDate);
+    }
+
+
+}
