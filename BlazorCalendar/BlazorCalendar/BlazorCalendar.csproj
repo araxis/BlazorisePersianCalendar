@@ -7,8 +7,9 @@
     <Company>ms</Company>
     <Product>Blazorise Persian Calendar</Product>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Description>Persian Date Calender &amp; Persian DatePicker View for Blazorise</Description>
+    <PackageProjectUrl>https://github.com/araxis/BlazorisePersianCalender</PackageProjectUrl>
   </PropertyGroup>
 
   

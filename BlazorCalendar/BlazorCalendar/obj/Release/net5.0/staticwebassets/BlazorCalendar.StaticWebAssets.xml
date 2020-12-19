@@ -1,0 +1,4 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="/" Path="C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Release\net5.0\scopedcss\bundle\" />
+  <ContentRoot BasePath="_content/Blazorise" Path="C:\Users\m.alifallahi.TITAN-DIESEL\.nuget\packages\blazorise\0.9.2.4\build\..\staticwebassets\" />
+</StaticWebAssets>

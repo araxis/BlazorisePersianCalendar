@@ -1,0 +1,25 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAsset Include="$(MSBuildThisFileDirectory)..\staticwebassets\background.png">
+      <SourceType>Package</SourceType>
+      <SourceId>BlazorisePersianCalendar</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/BlazorisePersianCalendar</BasePath>
+      <RelativePath>background.png</RelativePath>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$(MSBuildThisFileDirectory)..\staticwebassets\BlazorisePersianCalendar.bundle.scp.css">
+      <SourceType>Package</SourceType>
+      <SourceId>BlazorisePersianCalendar</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/BlazorisePersianCalendar</BasePath>
+      <RelativePath>BlazorisePersianCalendar.bundle.scp.css</RelativePath>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$(MSBuildThisFileDirectory)..\staticwebassets\exampleJsInterop.js">
+      <SourceType>Package</SourceType>
+      <SourceId>BlazorisePersianCalendar</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/BlazorisePersianCalendar</BasePath>
+      <RelativePath>exampleJsInterop.js</RelativePath>
+    </StaticWebAsset>
+  </ItemGroup>
+</Project>

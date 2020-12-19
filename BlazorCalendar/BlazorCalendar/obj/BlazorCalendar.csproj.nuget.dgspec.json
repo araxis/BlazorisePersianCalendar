@@ -1,0 +1,84 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Projects\\Components\\BlazorCalendar\\BlazorCalendar\\BlazorCalendar.csproj": {}
+  },
+  "projects": {
+    "C:\\Projects\\Components\\BlazorCalendar\\BlazorCalendar\\BlazorCalendar.csproj": {
+      "version": "1.0.4",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\Components\\BlazorCalendar\\BlazorCalendar\\BlazorCalendar.csproj",
+        "projectName": "BlazorisePersianCalendar",
+        "projectPath": "C:\\Projects\\Components\\BlazorCalendar\\BlazorCalendar\\BlazorCalendar.csproj",
+        "packagesPath": "C:\\Users\\m.alifallahi.TITAN-DIESEL\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\Components\\BlazorCalendar\\BlazorCalendar\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\m.alifallahi.TITAN-DIESEL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "http://192.168.2.230:5426/v3/index.json": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Blazorise": {
+              "target": "Package",
+              "version": "[0.9.2.4, )"
+            },
+            "Blazorise.Icons.FontAwesome": {
+              "target": "Package",
+              "version": "[0.9.2.4, )"
+            },
+            "DNTPersianUtils.Core": {
+              "target": "Package",
+              "version": "[3.8.0, )"
+            },
+            "Microsoft.AspNetCore.Components.Web": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

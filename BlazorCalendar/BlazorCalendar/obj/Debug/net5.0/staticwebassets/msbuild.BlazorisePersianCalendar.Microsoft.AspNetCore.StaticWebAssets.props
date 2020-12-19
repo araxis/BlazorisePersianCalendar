@@ -1,0 +1,11 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAsset Include="$(MSBuildThisFileDirectory)..\staticwebassets\background.png">
+      <SourceType>Package</SourceType>
+      <SourceId>BlazorisePersianCalendar</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/BlazorisePersianCalendar</BasePath>
+      <RelativePath>background.png</RelativePath>
+    </StaticWebAsset>
+  </ItemGroup>
+</Project>
