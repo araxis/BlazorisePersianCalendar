@@ -1,7 +1,0 @@
-﻿<StaticWebAssets Version="1.0">
-  <ContentRoot BasePath="/" Path="C:\Projects\Components\BlazorCalendar\BlazorApp1\bin\Debug\net5.0\wwwroot\" />
-  <ContentRoot BasePath="/" Path="C:\Projects\Components\BlazorCalendar\BlazorApp1\obj\Debug\net5.0\scopedcss\bundle\" />
-  <ContentRoot BasePath="_content/Blazorise" Path="C:\Users\m.alifallahi.TITAN-DIESEL\.nuget\packages\blazorise\0.9.2.4\build\..\staticwebassets\" />
-  <ContentRoot BasePath="_content/Blazorise.Bootstrap" Path="C:\Users\m.alifallahi.TITAN-DIESEL\.nuget\packages\blazorise.bootstrap\0.9.2.4\build\..\staticwebassets\" />
-  <ContentRoot BasePath="_content/BlazorisePersianCalendar" Path="C:\Projects\Components\BlazorCalendar\BlazorCalendar\wwwroot\" />
-</StaticWebAssets>
