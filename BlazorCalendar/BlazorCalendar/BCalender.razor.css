@@ -1,8 +1,0 @@
-﻿.calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-}
-
-.first-day {
-    grid-column-start: 3;
-}

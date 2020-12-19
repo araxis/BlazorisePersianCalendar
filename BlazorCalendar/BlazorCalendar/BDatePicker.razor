@@ -13,7 +13,8 @@
         <Dropdown Disabled="Disabled" @ref="@_dropdown">
 
             <DropdownMenu Padding="Padding.Is0">
-                <BCalender SelectedDate="@Date" SelectedDateChanged="OnDateChanged" />
+              
+                <BCalender  SpecialDays="@SpecialDays"  SelectedDate="@Date" SelectedDateChanged="OnDateChanged"/>
 
             </DropdownMenu>
         </Dropdown>
@@ -37,6 +38,13 @@
         [Parameter]
         public bool Disabled { get; set; }
 
+       
+
+        [Parameter]
+        public IEnumerable<SpecialDay> SpecialDays { get; set; }=new List<SpecialDay>();
+
+       
+
         void ToggleCalender()
         {
             _dropdown.Toggle();
@@ -57,7 +65,7 @@
             if (Date == DateTime.MinValue)
             {
                 Date = DateTime.Now;
-               
+
             }
         }
 
@@ -67,8 +75,9 @@
             if (Date == DateTime.MinValue)
             {
                 Date = DateTime.Now;
-               
+
             }
         }
+
 
     }

@@ -3,57 +3,63 @@
 
 
 <Card>
-    <CardHeader >
-        <Row  >
-            <Column ColumnSize="ColumnSize.Is1">
-                <Button   Size="Size.Small" Clicked="Prev" Float="Float.Right">@("<")</Button>
-            </Column>
-            <Column >              
-                   @($"{_currentDate.GetPersianMonth().GetPersianMonthName()} {_currentDate.GetPersianYear().ToPersianNumbers()} ")
-            </Column>
-            <Column  ColumnSize="ColumnSize.Is1">
-                <Button   Size="Size.Small" Clicked="Nex" Float="Float.Left">></Button>
-            </Column>
-        </Row>
-       
+    <CardHeader Padding="Padding.Is0.FromLeft.Is0.FromRight">
+
+
+        <Button Margin="Margin.Is0.FromRight" Size="Size.Small" Clicked="Prev" Float="Float.Right">@("<")</Button>
+        <Button Margin="Margin.Is0.FromLeft" Size="Size.Small" Clicked="Nex" Float="Float.Left">></Button>
+
+        <Text Float="Float.None" Alignment="TextAlignment.Center" Color="TextColor.Primary">
+            @($"{_currentDate.GetPersianMonth().GetPersianMonthName()} {_currentDate.GetPersianYear().ToPersianNumbers()} ")
+        </Text>
+
     </CardHeader>
     <CardBody Padding="Padding.Is1">
-        <Table   Narrow="true" Borderless="true" Padding="Padding.Is0"  Responsive="true">
+        <Table Narrow="true" Borderless="true" Padding="Padding.Is0" Responsive="true">
             <TableHeader ThemeContrast="ThemeContrast.Light">
                 <TableRow>
                     @foreach (var value in _weekDayNames)
                     {
-                        <TableHeaderCell TextAlignment="TextAlignment.Center" >@value</TableHeaderCell>
+                        <TableHeaderCell TextAlignment="TextAlignment.Center">@value</TableHeaderCell>
                     }
-                   
+
                 </TableRow>
             </TableHeader>
             <TableBody Padding="Padding.Is0">
                 @for (var i = 0; i < _rows; i++)
                 {
                     var week = i;
+
+
                     <TableRow>
 
-                            @for (var j = 0; j <= 6; j++)
-                            {
-                                var dayOfWeek = j;
-                                var date = _startDate.AddDays((week * 7) + dayOfWeek);
-                                var bgColor = date.DayOfYear == DateTime.Now.DayOfYear ? Background.Success : Background.None;
-                                var todayColor = date.DayOfYear == SelectedDate.DayOfYear ? TextColor.Warning : TextColor.Black50;
+                        @for (var j = 0; j <= 6; j++)
+                        {
+                            var dayOfWeek = j;
+                            var date = _startDate.AddDays((week * 7) + dayOfWeek);
+                            var bgColor = GetDateBackgroundColor(date);
+                            var todayColor = GetDateTextColor(date);
+                            var outlined = MustBeOutlined(date);
 
-                                <TableRowCell Style="cursor: pointer" TextColor="todayColor" TextAlignment="TextAlignment.Center" Background="@bgColor" Clicked="@(async () => await SelectDate(date))">
-                                    @if (date.GetPersianMonth() == _currentDate.GetPersianMonth())
-                                    {
-                                        @($"{date.GetPersianDayOfMonth().ToPersianNumbers()}")
-                                    }
-                                   
-                                </TableRowCell>
-                            }
-                        
+                            <TableRowCell TextAlignment="TextAlignment.Center">
+
+                                @if (date.GetPersianMonth() == _currentDate.GetPersianMonth())
+                                {
+
+                                    <Button Outline="outlined"  Clicked="@(() => SelectDate(date))" Block="@Blocked" Color="bgColor">
+                                        <Text Alignment="TextAlignment.Center" Color="todayColor">
+                                            @($"{date.GetPersianDayOfMonth().ToPersianNumbers()}")
+                                        </Text>
+
+                                    </Button>
+
+                                }
+
+                            </TableRowCell>
+                        }
+
                     </TableRow>
-                    <Row>
-                     
-                    </Row>
+
                 }
             </TableBody>
         </Table>
@@ -65,21 +71,42 @@
 
 @code {
 
-    readonly IEnumerable<string> _weekDayNames=new List<string>{"ش","ی","د","س","چ","پ","ج"};
+    readonly IEnumerable<string> _weekDayNames = new List<string> { "ش", "ی", "د", "س", "چ", "پ", "ج" };
     //new DateTime(0622,3,3)
 
     [Parameter]
-    public DateTime SelectedDate { get; set; } =DateTime.Now;
+    public DateTime SelectedDate { get; set; } = DateTime.Now;
 
     DateTime _currentDate = DateTime.Now;
 
     [Parameter]
     public EventCallback<DateTime> SelectedDateChanged { get; set; }
 
+    [Parameter]
+    public bool Blocked { get; set; } = true;
+
+    [Parameter]
+    public bool RenderSelectedDate { get; set; } = true;
+
+    [Parameter]
+    public bool RenderToday { get; set; } = true;
+
+
+
+    [Parameter]
+    public IEnumerable<SpecialDay> SpecialDays { get; set; } = new List<SpecialDay>();
+
+
+
+    [Parameter]
+    public EventCallback<YearMonthInfo> CurrentYearMonthInfoChanged { get; set; }
+
+
 
     DateTime _startDate;
 
     int _rows;
+
 
     protected override void OnInitialized()
     {
@@ -87,19 +114,14 @@
         if (SelectedDate == DateTime.MinValue)
         {
             SelectedDate = DateTime.Now;
-            _currentDate=DateTime.Now;
+            _currentDate = DateTime.Now;
         }
         _currentDate = SelectedDate;
         InitMonth(_currentDate);
+
     }
 
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-        if (SelectedDate != DateTime.MinValue) return;
-        SelectedDate = DateTime.Now;
-        _currentDate=DateTime.Now;
-    }
+
 
     private void InitMonth(DateTime date)
     {
@@ -114,23 +136,58 @@
 
     }
 
+
+
     async Task SelectDate(DateTime date)
     {
         await SelectedDateChanged.InvokeAsync(date);
     }
 
-    void Prev()
+    async  Task Prev()
     {
         _currentDate = _currentDate.AddMonths(-1);
+
         InitMonth(_currentDate);
+        var monthInfo = _currentDate.GetPersianMonthStartAndEndDates();
+        await CurrentYearMonthInfoChanged.InvokeAsync(new YearMonthInfo(monthInfo.StartDate,monthInfo.EndDate));
 
     }
 
-    void Nex()
+    async Task Nex()
     {
         _currentDate = _currentDate.AddMonths(1);
         InitMonth(_currentDate);
+        var monthInfo = _currentDate.GetPersianMonthStartAndEndDates();
+        await CurrentYearMonthInfoChanged.InvokeAsync(new YearMonthInfo(monthInfo.StartDate,monthInfo.EndDate));
     }
 
+
+    Color GetDateBackgroundColor(DateTime date)
+    {
+
+        var specialDay = SpecialDays.FirstOrDefault(d => d.Date.DayOfYear == date.DayOfYear);
+        if (specialDay != null) return specialDay.BackgroundColor;
+
+
+        if(date.DayOfYear == DateTime.Now.DayOfYear && RenderToday)return  Color.Success;
+        return date.DayOfYear==SelectedDate.DayOfYear ? Color.Success : Color.None;
+    }
+
+    TextColor GetDateTextColor(DateTime date)
+    {
+        const TextColor todayColor = TextColor.Black50;
+        if (!RenderSelectedDate) return todayColor;
+        return date.DayOfYear == SelectedDate.DayOfYear ? TextColor.Warning : TextColor.Black50;
+
+
+    }
+
+    bool MustBeOutlined(DateTime date)
+    {
+        if (date.DayOfYear == DateTime.Now.DayOfYear) return false;
+        var specialDay = SpecialDays.FirstOrDefault(d => d.Date.DayOfYear == date.DayOfYear);
+        if (specialDay != null) return false;
+        return date.DayOfYear == SelectedDate.DayOfYear;
+    }
 
 }

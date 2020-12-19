@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorCalendar", "BlazorCalendar\BlazorCalendar.csproj", "{89988315-60A0-4AFE-975C-0EC40CCC040E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorCalendar", "BlazorCalendar\BlazorCalendar.csproj", "{89988315-60A0-4AFE-975C-0EC40CCC040E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp1", "BlazorApp1\BlazorApp1.csproj", "{7F9B2CAC-18FF-4111-994F-31FC3E6CBBBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{89988315-60A0-4AFE-975C-0EC40CCC040E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89988315-60A0-4AFE-975C-0EC40CCC040E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89988315-60A0-4AFE-975C-0EC40CCC040E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9B2CAC-18FF-4111-994F-31FC3E6CBBBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9B2CAC-18FF-4111-994F-31FC3E6CBBBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9B2CAC-18FF-4111-994F-31FC3E6CBBBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9B2CAC-18FF-4111-994F-31FC3E6CBBBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
