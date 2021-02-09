@@ -5,7 +5,7 @@
   },
   "projects": {
     "C:\\Projects\\Components\\BlazorCalendar\\BlazorCalendar\\BlazorCalendar.csproj": {
-      "version": "1.0.4",
+      "version": "1.0.6",
       "restore": {
         "projectUniqueName": "C:\\Projects\\Components\\BlazorCalendar\\BlazorCalendar\\BlazorCalendar.csproj",
         "projectName": "BlazorisePersianCalendar",
@@ -46,19 +46,15 @@
           "dependencies": {
             "Blazorise": {
               "target": "Package",
-              "version": "[0.9.2.4, )"
-            },
-            "Blazorise.Icons.FontAwesome": {
-              "target": "Package",
-              "version": "[0.9.2.4, )"
+              "version": "[0.9.2.5, )"
             },
             "DNTPersianUtils.Core": {
               "target": "Package",
-              "version": "[3.8.0, )"
+              "version": "[3.9.0, )"
             },
             "Microsoft.AspNetCore.Components.Web": {
               "target": "Package",
-              "version": "[5.0.1, )"
+              "version": "[5.0.2, )"
             }
           },
           "imports": [
@@ -76,7 +72,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -41,9 +41,11 @@ using DNTPersianUtils.Core;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 29 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\BDatePicker.razor"
+#line 30 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\BDatePicker.razor"
            
         Dropdown _dropdown;
+
+    
 
         [Parameter]
         public DateTime Date { get; set; } = DateTime.Now;
@@ -54,23 +56,29 @@ using DNTPersianUtils.Core;
         [Parameter]
         public bool Disabled { get; set; }
 
-       
+        [Parameter]
+        public Size Size { get; set; } = Size.Small;
+
+        void Toggle()
+        {
+            
+            _dropdown.Toggle();
+          
+        }
+
 
         [Parameter]
         public IEnumerable<SpecialDay> SpecialDays { get; set; }=new List<SpecialDay>();
 
-       
 
-        void ToggleCalender()
-        {
-            _dropdown.Toggle();
 
-        }
+
 
         async Task OnDateChanged(DateTime date)
         {
+            Toggle();
             Date = date;
-            _dropdown.Hide();
+          
             await DateChanged.InvokeAsync(date);
 
         }

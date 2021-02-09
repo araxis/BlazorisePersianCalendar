@@ -59,6 +59,9 @@ using DNTPersianUtils.Core;
     public bool Blocked { get; set; } = true;
 
     [Parameter]
+    public Size DayButtonSize { get; set; }
+
+    [Parameter]
     public bool RenderSelectedDate { get; set; } = true;
 
     [Parameter]
@@ -74,8 +77,8 @@ using DNTPersianUtils.Core;
     [Parameter]
     public EventCallback<YearMonthInfo> CurrentYearMonthInfoChanged { get; set; }
 
-
-
+   
+ 
     DateTime _startDate;
 
     int _rows;
@@ -89,7 +92,10 @@ using DNTPersianUtils.Core;
             SelectedDate = DateTime.Now;
             _currentDate = DateTime.Now;
         }
-        _currentDate = SelectedDate;
+
+        var monthInfo = SelectedDate.GetPersianMonthStartAndEndDates();
+
+        _currentDate = monthInfo.StartDate;
         InitMonth(_currentDate);
 
     }
@@ -103,6 +109,7 @@ using DNTPersianUtils.Core;
         var startWeekDay = monthInfo.StartDate.PersianDayOfWeek();
         var diff = (startWeekDay - 0);
         _startDate = monthInfo.StartDate.AddDays(-(diff));
+
         var endDate = monthInfo.EndDate;
         var days = (endDate - _startDate).Days;
         _rows = (days / 7) + 1;
@@ -113,12 +120,14 @@ using DNTPersianUtils.Core;
 
     async Task SelectDate(DateTime date)
     {
+       // SelectedDate = date;
         await SelectedDateChanged.InvokeAsync(date);
     }
 
     async  Task Prev()
     {
-        _currentDate = _currentDate.AddMonths(-1);
+        var info = _currentDate.GetPersianMonthStartAndEndDates();
+        _currentDate = info.StartDate.AddDays(-1);
 
         InitMonth(_currentDate);
         var monthInfo = _currentDate.GetPersianMonthStartAndEndDates();
@@ -128,7 +137,8 @@ using DNTPersianUtils.Core;
 
     async Task Nex()
     {
-        _currentDate = _currentDate.AddMonths(1);
+        var info = _currentDate.GetPersianMonthStartAndEndDates();
+        _currentDate = info.EndDate.AddDays(1);
         InitMonth(_currentDate);
         var monthInfo = _currentDate.GetPersianMonthStartAndEndDates();
         await CurrentYearMonthInfoChanged.InvokeAsync(new YearMonthInfo(monthInfo.StartDate,monthInfo.EndDate));
@@ -141,26 +151,28 @@ using DNTPersianUtils.Core;
         var specialDay = SpecialDays.FirstOrDefault(d => d.Date.DayOfYear == date.DayOfYear);
         if (specialDay != null) return specialDay.BackgroundColor;
 
+      
 
-        if(date.DayOfYear == DateTime.Now.DayOfYear && RenderToday)return  Color.Success;
-        return date.DayOfYear==SelectedDate.DayOfYear ? Color.Success : Color.None;
+       // if(date.DayOfYear == DateTime.Now.DayOfYear && RenderToday)return  Color.Success;
+        if (date.Date == DateTime.Now.Date && RenderToday) return Color.Success;
+        return date.Date==SelectedDate.Date ? Color.Success : Color.None;
     }
 
     TextColor GetDateTextColor(DateTime date)
     {
         const TextColor todayColor = TextColor.Black50;
         if (!RenderSelectedDate) return todayColor;
-        return date.DayOfYear == SelectedDate.DayOfYear ? TextColor.Warning : TextColor.Black50;
+        return date.Date == SelectedDate.Date ? TextColor.Warning : TextColor.Black50;
 
 
     }
 
     bool MustBeOutlined(DateTime date)
     {
-        if (date.DayOfYear == DateTime.Now.DayOfYear) return false;
+        //if (date.Date == DateTime.Now.Date) return false;
         var specialDay = SpecialDays.FirstOrDefault(d => d.Date.DayOfYear == date.DayOfYear);
         if (specialDay != null) return false;
-        return date.DayOfYear == SelectedDate.DayOfYear;
+        return date.Date == SelectedDate.Date;
     }
 
 

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using DNTPersianUtils.Core;
 
 namespace BlazorCalendar
 {
