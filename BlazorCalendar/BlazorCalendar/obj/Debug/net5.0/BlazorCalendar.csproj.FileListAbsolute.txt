@@ -27,3 +27,7 @@ C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\BlazorCale
 C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\ref\BlazorCalendar.dll
 C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\BlazorCalendar.pdb
 C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\scopedcss\bundle\BlazorisePersianCalendar.styles.css
+C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\RazorDeclaration\PCalender.razor.g.cs
+C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\RazorDeclaration\PDatePicker.razor.g.cs
+C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\Razor\PCalender.razor.g.cs
+C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\Razor\PDatePicker.razor.g.cs

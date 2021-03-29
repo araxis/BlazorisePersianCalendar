@@ -9,7 +9,15 @@
       "DEBUG",
       "NET",
       "NET5_0",
-      "NETCOREAPP"
+      "NETCOREAPP",
+      "NET5_0_OR_GREATER",
+      "NETCOREAPP1_0_OR_GREATER",
+      "NETCOREAPP1_1_OR_GREATER",
+      "NETCOREAPP2_0_OR_GREATER",
+      "NETCOREAPP2_1_OR_GREATER",
+      "NETCOREAPP2_2_OR_GREATER",
+      "NETCOREAPP3_0_OR_GREATER",
+      "NETCOREAPP3_1_OR_GREATER"
     ],
     "languageVersion": "9.0",
     "platform": "",
@@ -23,7 +31,7 @@
   },
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "BlazorCalendar/1.0.6": {
+      "BlazorCalendar/1.2.0": {
         "dependencies": {
           "Blazorise": "0.9.2.5",
           "DNTPersianUtils.Core": "3.9.0",
@@ -1397,7 +1405,7 @@
     }
   },
   "libraries": {
-    "BlazorCalendar/1.0.6": {
+    "BlazorCalendar/1.2.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

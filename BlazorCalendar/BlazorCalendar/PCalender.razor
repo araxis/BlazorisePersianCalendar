@@ -1,0 +1,254 @@
+﻿@using System.Globalization
+@using DNTPersianUtils.Core
+<form>
+    <div class="date-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <button @onclick:preventDefault="true" @onclick:stopPropagation="true" @onclick="_=>OnPrev()" class="btn">&#10094;</button>
+            <div class="text-center">
+
+
+                <span class="text-center"> @_pMonth.GetPersianMonthName()</span>
+                <br>
+                <span class="text-center" style="font-size: 18px">@_year.ToPersianNumbers()</span>
+
+
+            </div>
+
+            <button @onclick:preventDefault="true" @onclick:stopPropagation="true" @onclick="_=>OnNext()" class="btn">&#10095;</button>
+
+        </div>
+
+        <div class="day-row">
+            @foreach (var item in _weekDayNames)
+            {
+                <div style="padding: 2px">
+                    <div class="text-center">
+                        <span class="day-name"> @item</span>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</form>
+<div class="box-days border">
+    
+
+     
+    @foreach (var item in _days)
+        {
+            @if (CanShow(item))
+            {
+                <div style="padding: 2px;cursor: pointer;" class="text-center"   @onclick="_ => DateSelected(item)">
+
+                    <div  class="@GetItemClass(item)">
+                        <span>
+                            @item.GetPersianDayOfMonth().ToPersianNumbers()
+                        </span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style="padding: 2px;" ></div>
+            }
+           
+        }
+
+    </div>
+
+
+
+<style>
+
+    .date-header {
+        background-color: #1abc9c;
+        padding: 5px
+    }
+
+
+
+    .box-days {
+        min-width: 300px;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+        .box-days > * {
+            flex: 0 0 14.2857142857%;
+           
+        }
+
+    .day-row {
+        background-color: #1abc9c;
+        min-width: 300px;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+        .day-row > * {
+            flex: 0 0 14.2857142857%;
+        }
+    .day-row .day-name{
+        text-align: justify;
+        font-weight: bold;
+    }
+
+    .box-days .today {
+      
+        background: #1abc9c;
+        color: white !important;
+    }
+
+   
+</style>
+@code {
+
+    readonly IEnumerable<string> _weekDayNames = new List<string> { "ش", "ی", "د", "س", "چ", "پ", "ج" };
+    List<DateTime> _days = new();
+
+
+    int _year;
+    int _pMonth;
+
+    [Parameter]
+    public DateTime Date { get; set; } = DateTime.Now;
+
+    [Parameter]
+    public IEnumerable<SpecialDay> SpecialDays { get; set; } = new List<SpecialDay>();
+
+    [Parameter]
+    public bool RenderSelectedDate { get; set; } = true;
+
+    [Parameter]
+    public bool RenderToday { get; set; } = true;
+
+
+    [Parameter]
+    public EventCallback<DateTime> DateChanged { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        var pc = new PersianCalendar();
+        var month= pc.GetMonth(Date);
+        var year = pc.GetYear(Date);
+
+        var days= pc.GetDaysInMonth(year, month);
+        var date = pc.ToDateTime(year, month, 1, 0, 0, 0,0);
+
+
+        _year=date.GetPersianYear();
+        _pMonth = date.GetPersianMonth();
+        var startWeekDay = PersianDayOfWeek(date);
+        date = pc.AddDays(date,-startWeekDay);
+
+        for (var i = 0; i < days; i++)
+        {
+            _days.Add(pc.AddDays(date,i));
+        }
+
+    }
+
+    void OnNext()
+    {
+        AddMonth(1);
+    }
+
+    int PersianDayOfWeek( DayOfWeek start)
+    {
+        return start switch
+        {
+            DayOfWeek.Saturday => 0,
+            DayOfWeek.Sunday => 1,
+            DayOfWeek.Monday => 2,
+            DayOfWeek.Tuesday => 3,
+            DayOfWeek.Wednesday => 4,
+            DayOfWeek.Thursday => 5,
+            _ => 6
+        };
+        // return start == DayOfWeek.Saturday ? 0 : ((int) start) + 1;
+
+    }
+
+    int PersianDayOfWeek( DateTime date)
+    {
+        return date.DayOfWeek.PersianDayOfWeek();
+    }
+
+
+    private void OnPrev()
+    {
+        AddMonth(-1);
+    }
+
+    private void AddMonth(int monthCount)
+    {
+        var pc = new PersianCalendar();
+        var date = pc.ToDateTime(_year, _pMonth, 1, 0, 0, 0,0);
+        date = pc.AddMonths(date, monthCount);
+
+        _year =date.GetPersianYear();
+        _pMonth = date.GetPersianMonth();
+        var days = pc.GetDaysInMonth(_year, _pMonth);
+        var startWeekDay = PersianDayOfWeek(date);
+        date = pc.AddDays(date,-startWeekDay);
+        _days.Clear();
+        for (var i = 0; i < days; i++)
+        {
+            _days.Add(pc.AddDays(date,i));
+        }
+    }
+
+    private async Task DateSelected(DateTime item)
+    {
+        await DateChanged.InvokeAsync(item);
+    }
+
+
+
+
+    private string GetItemClass(DateTime item)
+    {
+        var selectedCss = RenderSelectedDate && item.DayOfYear == Date.DayOfYear ? "border border-primary" : "";
+        var specialDay = SpecialDays.FirstOrDefault(d => d.Date.DayOfYear == item.DayOfYear);
+
+        if (specialDay != null)
+        {
+            var bg= specialDay.BackgroundColor switch {
+                Color.Link => "bg-white",
+                Color.None => "bg-transparent",
+                Color.Primary => "bg-primary",
+                Color.Secondary => "bg-secondary",
+                Color.Success => "bg-success",
+                Color.Danger => "bg-danger",
+                Color.Warning => "bg-warning",
+                Color.Info => "bg-info",
+                Color.Light => "bg-light",
+                Color.Dark => "bg-dark",
+                _ => throw new ArgumentOutOfRangeException()};
+
+            return $"text-center {bg} {selectedCss}";
+        }
+
+        var today= RenderToday && item.DayOfYear == DateTime.Now.DayOfYear ? "today" : "";
+
+        return $"text-center {today} {selectedCss}";
+
+
+    }
+
+    private bool CanShow(DateTime date)
+    {
+        var pc = new PersianCalendar();
+        var month = pc.GetMonth(date);
+        return month == _pMonth;
+
+    }
+
+}

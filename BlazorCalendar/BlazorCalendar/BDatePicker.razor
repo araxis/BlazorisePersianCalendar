@@ -1,29 +1,28 @@
 ﻿@using DNTPersianUtils.Core
 
-    <Addons>
 
-        <Addon AddonType="AddonType.Body">
-            <TextEdit @onclick="Toggle" Style="background-color: white" Size="@Size" ReadOnly="true" Text="@(Date.ToShortPersianDateString().ToPersianNumbers())" />
-        </Addon>
-        <Addon AddonType="AddonType.Start">
-            <Button Size="@Size" Clicked="Toggle" Color="Color.Secondary">
-                <Icon Name="IconName.CalendarDay"></Icon>
-            </Button>
 
-        </Addon>
+
+<Addons>
+    <Addon AddonType="AddonType.Body">
+        <TextEdit @onclick="Toggle"  Style="background-color: white" Size="@Size" ReadOnly="true" Text="@(Date.ToShortPersianDateString().ToPersianNumbers())" />
+    </Addon>
+    <Addon AddonType="AddonType.Start">
+
         <Dropdown Disabled="Disabled" @ref="@_dropdown">
 
-            <DropdownMenu Padding="Padding.Is0">
-
-                <BCalender DayButtonSize="@Size" SpecialDays="@SpecialDays" SelectedDate="@Date" SelectedDateChanged="OnDateChanged" />
-
+            <DropdownToggle Size="@Size" Color="Color.Secondary" ToggleIconVisible="false" Split="true">
+                <Icon Name="IconName.CalendarDay"></Icon>
+            </DropdownToggle>
+            <DropdownMenu>
+                <DropdownItem Padding="Padding.Is0">
+                    <BCalender DayButtonSize="@Size" SpecialDays="@SpecialDays" SelectedDate="@Date" SelectedDateChanged="OnDateChanged"/>
+                </DropdownItem>
             </DropdownMenu>
         </Dropdown>
-    </Addons>
+    </Addon>
 
-
-
-
+</Addons>
 
 
 
@@ -46,7 +45,7 @@
 
         void Toggle()
         {
-            
+            if(Disabled) return;
             _dropdown.Toggle();
           
         }

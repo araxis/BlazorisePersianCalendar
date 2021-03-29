@@ -1,0 +1,58 @@
+﻿@using DNTPersianUtils.Core
+
+<Addons>
+    <Addon AddonType="AddonType.Body">
+        <TextEdit @onclick="Toggle" Disabled="Disabled"  Style="background-color: white" Size="@Size" ReadOnly="true"
+                   Text="@Date.ToShortPersianDateString()" />
+    </Addon>
+    <Addon AddonType="AddonType.Start">
+
+        <Dropdown  Disabled="Disabled" @ref="@_dropdown" >
+            <DropdownToggle Color="Color.Secondary" ToggleIconVisible="false" Split="true">
+                <Icon Name="IconName.CalendarDay"></Icon>
+            </DropdownToggle>
+            <DropdownMenu  Padding="Padding.Is0" Margin="Margin.Is0" >
+               
+                <PCalender  Date="Date" DateChanged="OnDateChanged" SpecialDays="SpecialDays" RenderToday="RenderToday" />
+                
+            </DropdownMenu>
+        </Dropdown>
+    </Addon>
+
+</Addons>
+
+@code {
+
+    Dropdown _dropdown;
+
+    [Parameter]
+    public DateTime Date { get; set; } = DateTime.Now;
+
+    [Parameter]
+    public EventCallback<DateTime> DateChanged { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter]
+    public Size Size { get; set; } = Size.Small;
+
+    [Parameter]
+    public bool RenderToday { get; set; } = true;
+
+    [Parameter]
+    public IEnumerable<SpecialDay> SpecialDays { get; set; }=new List<SpecialDay>();
+
+    void Toggle()
+    {
+        if(Disabled) return;
+        _dropdown.Toggle();
+          
+    }
+
+    private async Task OnDateChanged(DateTime arg)
+    {
+        await DateChanged.InvokeAsync(arg);
+    }
+
+}

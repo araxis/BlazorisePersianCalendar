@@ -41,7 +41,7 @@ using DNTPersianUtils.Core;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 30 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\BDatePicker.razor"
+#line 29 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\BDatePicker.razor"
            
         Dropdown _dropdown;
 
@@ -61,7 +61,7 @@ using DNTPersianUtils.Core;
 
         void Toggle()
         {
-            
+            if(Disabled) return;
             _dropdown.Toggle();
           
         }

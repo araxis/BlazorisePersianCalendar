@@ -77,8 +77,8 @@ using DNTPersianUtils.Core;
     [Parameter]
     public EventCallback<YearMonthInfo> CurrentYearMonthInfoChanged { get; set; }
 
-   
- 
+
+
     DateTime _startDate;
 
     int _rows;
@@ -120,18 +120,18 @@ using DNTPersianUtils.Core;
 
     async Task SelectDate(DateTime date)
     {
-       // SelectedDate = date;
+        // SelectedDate = date;
         await SelectedDateChanged.InvokeAsync(date);
     }
 
-    async  Task Prev()
+    async Task Prev()
     {
         var info = _currentDate.GetPersianMonthStartAndEndDates();
         _currentDate = info.StartDate.AddDays(-1);
 
         InitMonth(_currentDate);
         var monthInfo = _currentDate.GetPersianMonthStartAndEndDates();
-        await CurrentYearMonthInfoChanged.InvokeAsync(new YearMonthInfo(monthInfo.StartDate,monthInfo.EndDate));
+        await CurrentYearMonthInfoChanged.InvokeAsync(new YearMonthInfo(monthInfo.StartDate, monthInfo.EndDate));
 
     }
 
@@ -141,7 +141,7 @@ using DNTPersianUtils.Core;
         _currentDate = info.EndDate.AddDays(1);
         InitMonth(_currentDate);
         var monthInfo = _currentDate.GetPersianMonthStartAndEndDates();
-        await CurrentYearMonthInfoChanged.InvokeAsync(new YearMonthInfo(monthInfo.StartDate,monthInfo.EndDate));
+        await CurrentYearMonthInfoChanged.InvokeAsync(new YearMonthInfo(monthInfo.StartDate, monthInfo.EndDate));
     }
 
 
@@ -151,11 +151,11 @@ using DNTPersianUtils.Core;
         var specialDay = SpecialDays.FirstOrDefault(d => d.Date.DayOfYear == date.DayOfYear);
         if (specialDay != null) return specialDay.BackgroundColor;
 
-      
 
-       // if(date.DayOfYear == DateTime.Now.DayOfYear && RenderToday)return  Color.Success;
+
+        // if(date.DayOfYear == DateTime.Now.DayOfYear && RenderToday)return  Color.Success;
         if (date.Date == DateTime.Now.Date && RenderToday) return Color.Success;
-        return date.Date==SelectedDate.Date ? Color.Success : Color.None;
+        return date.Date == SelectedDate.Date ? Color.Success : Color.None;
     }
 
     TextColor GetDateTextColor(DateTime date)

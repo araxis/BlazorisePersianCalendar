@@ -5,7 +5,7 @@
 <Card>
     <CardHeader Padding="Padding.Is0.FromLeft.Is0.FromRight">
 
-        
+
         <Button Margin="Margin.Is0.FromRight" Size="Size.Small" Clicked="Prev" Float="Float.Right">@("<")</Button>
         <Button Margin="Margin.Is0.FromLeft" Size="Size.Small" Clicked="Nex" Float="Float.Left">></Button>
 
@@ -14,13 +14,13 @@
         </Text>
 
     </CardHeader>
-    <CardBody Padding="Padding.Is1">
+    <CardBody Padding="Padding.Is0">
         <Table Narrow="true" Borderless="true" Padding="Padding.Is0" Responsive="true">
             <TableHeader ThemeContrast="ThemeContrast.Light">
-                <TableRow>
+                <TableRow >
                     @foreach (var value in _weekDayNames)
                     {
-                        <TableHeaderCell TextAlignment="TextAlignment.Center">@value</TableHeaderCell>
+                        <TableHeaderCell   TextAlignment="TextAlignment.Center">@value</TableHeaderCell>
                     }
 
                 </TableRow>
@@ -41,19 +41,19 @@
                             var todayColor = GetDateTextColor(date);
                             var outlined = MustBeOutlined(date);
 
-                            <TableRowCell TextAlignment="TextAlignment.Center">
+                            <TableRowCell @key="date" TextAlignment="TextAlignment.Center">
 
-                              @if (date.GetPersianMonth() == _currentDate.GetPersianMonth())
-                              {
+                                @if (date.GetPersianMonth() == _currentDate.GetPersianMonth())
+                                {
 
-                                  <Button Size="@DayButtonSize" Outline="outlined" Clicked="@(() => SelectDate(date))" Block="@Blocked" Color="bgColor">
-                                      <Text Alignment="TextAlignment.Center" Color="todayColor">
-                                          @($"{date.GetPersianDayOfMonth().ToPersianNumbers()}")
-                                      </Text>
+                                    <Button Size="@DayButtonSize" Outline="outlined" Clicked="@(() => SelectDate(date))" Block="@Blocked" Color="bgColor">
+                                        <Text Alignment="TextAlignment.Center" Color="todayColor">
+                                            @($"{date.GetPersianDayOfMonth().ToPersianNumbers()}")
+                                        </Text>
 
-                                  </Button>
-                              }
-                           
+                                    </Button>
+                                }
+
 
                             </TableRowCell>
                         }
@@ -104,8 +104,8 @@
     [Parameter]
     public EventCallback<YearMonthInfo> CurrentYearMonthInfoChanged { get; set; }
 
-   
- 
+
+
     DateTime _startDate;
 
     int _rows;
@@ -147,18 +147,18 @@
 
     async Task SelectDate(DateTime date)
     {
-       // SelectedDate = date;
+        // SelectedDate = date;
         await SelectedDateChanged.InvokeAsync(date);
     }
 
-    async  Task Prev()
+    async Task Prev()
     {
         var info = _currentDate.GetPersianMonthStartAndEndDates();
         _currentDate = info.StartDate.AddDays(-1);
 
         InitMonth(_currentDate);
         var monthInfo = _currentDate.GetPersianMonthStartAndEndDates();
-        await CurrentYearMonthInfoChanged.InvokeAsync(new YearMonthInfo(monthInfo.StartDate,monthInfo.EndDate));
+        await CurrentYearMonthInfoChanged.InvokeAsync(new YearMonthInfo(monthInfo.StartDate, monthInfo.EndDate));
 
     }
 
@@ -168,7 +168,7 @@
         _currentDate = info.EndDate.AddDays(1);
         InitMonth(_currentDate);
         var monthInfo = _currentDate.GetPersianMonthStartAndEndDates();
-        await CurrentYearMonthInfoChanged.InvokeAsync(new YearMonthInfo(monthInfo.StartDate,monthInfo.EndDate));
+        await CurrentYearMonthInfoChanged.InvokeAsync(new YearMonthInfo(monthInfo.StartDate, monthInfo.EndDate));
     }
 
 
@@ -178,11 +178,11 @@
         var specialDay = SpecialDays.FirstOrDefault(d => d.Date.DayOfYear == date.DayOfYear);
         if (specialDay != null) return specialDay.BackgroundColor;
 
-      
 
-       // if(date.DayOfYear == DateTime.Now.DayOfYear && RenderToday)return  Color.Success;
+
+        // if(date.DayOfYear == DateTime.Now.DayOfYear && RenderToday)return  Color.Success;
         if (date.Date == DateTime.Now.Date && RenderToday) return Color.Success;
-        return date.Date==SelectedDate.Date ? Color.Success : Color.None;
+        return date.Date == SelectedDate.Date ? Color.Success : Color.None;
     }
 
     TextColor GetDateTextColor(DateTime date)
