@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>BlazorisePersianCalendar</id>
-    <version>1.2.0</version>
+    <version>1.2.9</version>
     <authors>aida rezapour,meisam alifallahi</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/araxis/BlazorisePersianCalender</projectUrl>
@@ -10,7 +10,7 @@
     <dependencies>
       <group targetFramework="net5.0">
         <dependency id="Blazorise" version="0.9.2.5" exclude="Build,Analyzers" />
-        <dependency id="DNTPersianUtils.Core" version="4.0.0" exclude="Build,Analyzers" />
+        <dependency id="DNTPersianUtils.Core" version="3.9.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.AspNetCore.Components.Web" version="5.0.2" exclude="Build,Analyzers" />
       </group>
     </dependencies>

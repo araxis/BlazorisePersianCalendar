@@ -27,20 +27,20 @@ using Blazorise;
 #line hidden
 #nullable disable
 #nullable restore
-#line 1 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\PCalender.razor"
+#line 1 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\PCalender 2.razor"
 using System.Globalization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\PCalender.razor"
+#line 2 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\PCalender 2.razor"
 using DNTPersianUtils.Core;
 
 #line default
 #line hidden
 #nullable disable
-    public partial class PCalender : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class PCalender_2 : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -48,17 +48,16 @@ using DNTPersianUtils.Core;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 111 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\PCalender.razor"
+#line 111 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\PCalender 2.razor"
        
 
     readonly IEnumerable<string> _weekDayNames = new List<string> { "ش", "ی", "د", "س", "چ", "پ", "ج" };
+    List<DateTime> _days = new();
 
 
+    int _year;
+    int _pMonth;
 
-    //int _year;
-    //int _pMonth;
-
-    private DateTime _date = DateTime.Now;
     [Parameter]
     public DateTime Date
     {
@@ -66,13 +65,20 @@ using DNTPersianUtils.Core;
         set
         {
             _date = value;
-            _pDate = Date == DateTime.MinValue ? DateTime.Now : value;
+            if (Date == DateTime.MinValue)
+            {
+                _pDate = DateTime.Now;
 
+            }
+            else
+            {
+                _pDate = value;
+            }
         }
     }
 
     DateTime _pDate;
-
+    private DateTime _date = DateTime.Now;
 
     [Parameter]
     public IEnumerable<SpecialDay> SpecialDays { get; set; } = new List<SpecialDay>();
@@ -87,50 +93,60 @@ using DNTPersianUtils.Core;
     [Parameter]
     public EventCallback<DateTime> DateChanged { get; set; }
 
-
-
-
-    IEnumerable<DateTime> GetDays(DateTime item)
+    protected override void OnInitialized()
     {
-        var ret = new List<DateTime>();
+        base.OnInitialized();
+
+
+
         var pc = new PersianCalendar();
-        var month = pc.GetMonth(item);
-        var year = pc.GetYear(item);
+        var month = pc.GetMonth(_pDate);
+        var year = pc.GetYear(_pDate);
 
         var days = pc.GetDaysInMonth(year, month);
         var date = pc.ToDateTime(year, month, 1, 0, 0, 0, 0);
 
 
-        var   _year = date.GetPersianYear();
-        var  _pMonth = date.GetPersianMonth();
-        var startWeekDay = date.PersianDayOfWeek();
+        _year = date.GetPersianYear();
+        _pMonth = date.GetPersianMonth();
+        var startWeekDay = PersianDayOfWeek(date);
         date = pc.AddDays(date, -startWeekDay);
 
         for (var i = 0; i < days+ startWeekDay; i++)
         {
-
-            ret.Add(pc.AddDays(date, i));
+            _days.Add(pc.AddDays(date, i));
         }
-        return ret;
 
     }
 
-    int GetCurrentPersianYear(DateTime date)
-    {
-        return date.GetPersianYear();
-    }
 
-    int GetCurrentPersianMonth(DateTime date)
-    {
-        return date.GetPersianMonth();
-    }
+
 
     void OnNext()
     {
         AddMonth(1);
     }
 
+    int PersianDayOfWeek( DayOfWeek start)
+    {
+        return start switch
+        {
+            DayOfWeek.Saturday => 0,
+            DayOfWeek.Sunday => 1,
+            DayOfWeek.Monday => 2,
+            DayOfWeek.Tuesday => 3,
+            DayOfWeek.Wednesday => 4,
+            DayOfWeek.Thursday => 5,
+            _ => 6
+        };
+        // return start == DayOfWeek.Saturday ? 0 : ((int) start) + 1;
 
+    }
+
+    int PersianDayOfWeek( DateTime date)
+    {
+        return date.DayOfWeek.PersianDayOfWeek();
+    }
 
 
     private void OnPrev()
@@ -140,22 +156,20 @@ using DNTPersianUtils.Core;
 
     private void AddMonth(int monthCount)
     {
-
         var pc = new PersianCalendar();
+        var date = pc.ToDateTime(_year, _pMonth, 1, 0, 0, 0,0);
+        date = pc.AddMonths(date, monthCount);
 
-        var date = pc.ToDateTime(_pDate.GetPersianYear(), _pDate.GetPersianMonth(), 1, 0, 0, 0,0);
-        _pDate = pc.AddMonths(date, monthCount);
-
-        //_year = _date.GetPersianYear();
-        //_pMonth = _date.GetPersianMonth();
-        //var days = pc.GetDaysInMonth(_year, _pMonth);
-        //var startWeekDay = _date.PersianDayOfWeek();
-        //date = pc.AddDays(date,-startWeekDay);
-
-        //for (var i = 0; i < days+ startWeekDay; i++)
-        //{
-        //    _days.Add(pc.AddDays(date,i));
-        //}
+        _year = date.GetPersianYear();
+        _pMonth = date.GetPersianMonth();
+        var days = pc.GetDaysInMonth(_year, _pMonth);
+        var startWeekDay = PersianDayOfWeek(date);
+        date = pc.AddDays(date,-startWeekDay);
+        _days.Clear();
+        for (var i = 0; i < days+ startWeekDay; i++)
+        {
+            _days.Add(pc.AddDays(date,i));
+        }
     }
 
     private async Task DateSelected(DateTime item)
@@ -200,7 +214,7 @@ using DNTPersianUtils.Core;
     {
         var pc = new PersianCalendar();
         var month = pc.GetMonth(date);
-        return month == _pDate.GetPersianMonth();
+        return month == _pMonth;
 
     }
 

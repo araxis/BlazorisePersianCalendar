@@ -5,7 +5,8 @@
 
 <Addons>
     <Addon AddonType="AddonType.Body">
-        <TextEdit @onclick="Toggle"  Style="background-color: white" Size="@Size" ReadOnly="true" Text="@(Date.ToShortPersianDateString().ToPersianNumbers())" />
+        <TextEdit @onclick="Toggle"  Style="background-color: white" Size="@Size" ReadOnly="true"
+                   Text="@(Date!=DateTime.MinValue? Date.ToShortPersianDateString().ToPersianNumbers():"")" />
     </Addon>
     <Addon AddonType="AddonType.Start">
 

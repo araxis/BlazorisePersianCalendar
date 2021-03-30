@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>BlazorisePersianCalendar</id>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <authors>aida rezapour,meisam alifallahi</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/araxis/BlazorisePersianCalender</projectUrl>

@@ -27,13 +27,13 @@ using Blazorise;
 #line hidden
 #nullable disable
 #nullable restore
-#line 1 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\PDatePicker.razor"
+#line 1 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\PDatePicker - Copy.razor"
 using DNTPersianUtils.Core;
 
 #line default
 #line hidden
 #nullable disable
-    public partial class PDatePicker : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class PDatePicker___Copy : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -41,7 +41,7 @@ using DNTPersianUtils.Core;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 26 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\PDatePicker.razor"
+#line 26 "C:\Projects\Components\BlazorCalendar\BlazorCalendar\PDatePicker - Copy.razor"
        
 
     Dropdown _dropdown;
@@ -71,7 +71,12 @@ using DNTPersianUtils.Core;
     [Parameter]
     public Func<DateTime, string> Formatter { get; set; } = (date) => date == DateTime.MinValue ? string.Empty : date.ToShortPersianDateString();
 
-
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        // _date = Date;
+       // if(Date==DateTime.MinValue) Date=DateTime.Now;
+    }
 
     [Parameter]
     public IEnumerable<SpecialDay> SpecialDays { get; set; }=new List<SpecialDay>();

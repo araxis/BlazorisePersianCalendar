@@ -3,18 +3,20 @@
 <form>
     <div class="date-header">
         <div class="d-flex justify-content-between align-items-center">
-            <button @onclick:preventDefault="true" @onclick:stopPropagation="true" @onclick="_=>OnPrev()" class="btn">&#10094;</button>
+            <div style="padding: 2px;cursor: pointer"  @onclick:preventDefault="true" @onclick:stopPropagation="true" @onclick="_=>OnPrev()" >&#10094;</div>
             <div class="text-center">
+                
+                
 
 
-                <span class="text-center"> @_pMonth.GetPersianMonthName()</span>
-                <br>
-                <span class="text-center" style="font-size: 18px">@_year.ToPersianNumbers()</span>
+                <span class="text-center"> @GetCurrentPersianMonth(_pDate).GetPersianMonthName()</span>
+                <br/>
+                <span class="text-center" style="font-size: 18px"><small>@GetCurrentPersianYear(_pDate)</small></span>
 
 
             </div>
 
-            <button @onclick:preventDefault="true" @onclick:stopPropagation="true" @onclick="_=>OnNext()" class="btn">&#10095;</button>
+            <div style="padding: 2px;cursor: pointer" @onclick:preventDefault="true" @onclick:stopPropagation="true" @onclick="_=>OnNext()" >&#10095;</div>
 
         </div>
 
@@ -35,7 +37,7 @@
     
 
      
-    @foreach (var item in _days)
+    @foreach (var item in GetDays(_pDate))
         {
             @if (CanShow(item))
             {
@@ -109,14 +111,27 @@
 @code {
 
     readonly IEnumerable<string> _weekDayNames = new List<string> { "ش", "ی", "د", "س", "چ", "پ", "ج" };
-    List<DateTime> _days = new();
 
 
-    int _year;
-    int _pMonth;
 
+    //int _year;
+    //int _pMonth;
+
+    private DateTime _date = DateTime.Now;
     [Parameter]
-    public DateTime Date { get; set; } = DateTime.Now;
+    public DateTime Date
+    {
+        get => _date;
+        set
+        {
+            _date = value;
+            _pDate = Date == DateTime.MinValue ? DateTime.Now : value;
+
+        }
+    }
+
+    DateTime _pDate;
+
 
     [Parameter]
     public IEnumerable<SpecialDay> SpecialDays { get; set; } = new List<SpecialDay>();
@@ -131,33 +146,42 @@
     [Parameter]
     public EventCallback<DateTime> DateChanged { get; set; }
 
-    protected override void OnInitialized()
+
+
+
+    IEnumerable<DateTime> GetDays(DateTime item)
     {
-        base.OnInitialized();
-        if (Date == DateTime.MinValue)
-        {
-            Date = DateTime.Now;
-            
-        }
-
+        var ret = new List<DateTime>();
         var pc = new PersianCalendar();
-        var month= pc.GetMonth(Date);
-        var year = pc.GetYear(Date);
+        var month = pc.GetMonth(item);
+        var year = pc.GetYear(item);
 
-        var days= pc.GetDaysInMonth(year, month);
-        var date = pc.ToDateTime(year, month, 1, 0, 0, 0,0);
+        var days = pc.GetDaysInMonth(year, month);
+        var date = pc.ToDateTime(year, month, 1, 0, 0, 0, 0);
 
 
-        _year=date.GetPersianYear();
-        _pMonth = date.GetPersianMonth();
-        var startWeekDay = PersianDayOfWeek(date);
-        date = pc.AddDays(date,-startWeekDay);
+        var   _year = date.GetPersianYear();
+        var  _pMonth = date.GetPersianMonth();
+        var startWeekDay = date.PersianDayOfWeek();
+        date = pc.AddDays(date, -startWeekDay);
 
-        for (var i = 0; i < days; i++)
+        for (var i = 0; i < days+ startWeekDay; i++)
         {
-            _days.Add(pc.AddDays(date,i));
-        }
 
+            ret.Add(pc.AddDays(date, i));
+        }
+        return ret;
+
+    }
+
+    int GetCurrentPersianYear(DateTime date)
+    {
+        return date.GetPersianYear();
+    }
+
+    int GetCurrentPersianMonth(DateTime date)
+    {
+        return date.GetPersianMonth();
     }
 
     void OnNext()
@@ -165,26 +189,7 @@
         AddMonth(1);
     }
 
-    int PersianDayOfWeek( DayOfWeek start)
-    {
-        return start switch
-        {
-            DayOfWeek.Saturday => 0,
-            DayOfWeek.Sunday => 1,
-            DayOfWeek.Monday => 2,
-            DayOfWeek.Tuesday => 3,
-            DayOfWeek.Wednesday => 4,
-            DayOfWeek.Thursday => 5,
-            _ => 6
-        };
-        // return start == DayOfWeek.Saturday ? 0 : ((int) start) + 1;
 
-    }
-
-    int PersianDayOfWeek( DateTime date)
-    {
-        return date.DayOfWeek.PersianDayOfWeek();
-    }
 
 
     private void OnPrev()
@@ -194,20 +199,22 @@
 
     private void AddMonth(int monthCount)
     {
-        var pc = new PersianCalendar();
-        var date = pc.ToDateTime(_year, _pMonth, 1, 0, 0, 0,0);
-        date = pc.AddMonths(date, monthCount);
 
-        _year =date.GetPersianYear();
-        _pMonth = date.GetPersianMonth();
-        var days = pc.GetDaysInMonth(_year, _pMonth);
-        var startWeekDay = PersianDayOfWeek(date);
-        date = pc.AddDays(date,-startWeekDay);
-        _days.Clear();
-        for (var i = 0; i < days; i++)
-        {
-            _days.Add(pc.AddDays(date,i));
-        }
+        var pc = new PersianCalendar();
+
+        var date = pc.ToDateTime(_pDate.GetPersianYear(), _pDate.GetPersianMonth(), 1, 0, 0, 0,0);
+        _pDate = pc.AddMonths(date, monthCount);
+
+        //_year = _date.GetPersianYear();
+        //_pMonth = _date.GetPersianMonth();
+        //var days = pc.GetDaysInMonth(_year, _pMonth);
+        //var startWeekDay = _date.PersianDayOfWeek();
+        //date = pc.AddDays(date,-startWeekDay);
+
+        //for (var i = 0; i < days+ startWeekDay; i++)
+        //{
+        //    _days.Add(pc.AddDays(date,i));
+        //}
     }
 
     private async Task DateSelected(DateTime item)
@@ -252,7 +259,7 @@
     {
         var pc = new PersianCalendar();
         var month = pc.GetMonth(date);
-        return month == _pMonth;
+        return month == _pDate.GetPersianMonth();
 
     }
 

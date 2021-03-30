@@ -2,19 +2,21 @@
 
 <Addons>
     <Addon AddonType="AddonType.Body">
-        <TextEdit @onclick="Toggle" Disabled="Disabled"  Style="background-color: white" Size="@Size" ReadOnly="true"
-                   Text="@Date.ToShortPersianDateString()" />
+        <TextEdit  @onclick="Toggle" Disabled="Disabled" Placeholder="@GetPlaceHolderDateString(Date)"  Style="background-color: white" Size="@Size" ReadOnly="true"
+                   Text="@Formatter(Date)" />
     </Addon>
     <Addon AddonType="AddonType.Start">
 
-        <Dropdown    Disabled="Disabled" @ref="@_dropdown" >
+        <Dropdown   Disabled="Disabled" @ref="@_dropdown" >
             <DropdownToggle Size="@Size" Color="Color.Secondary" ToggleIconVisible="false" Split="true">
                 <Icon Name="IconName.CalendarDay"></Icon>
             </DropdownToggle>
-            <DropdownMenu  Padding="Padding.Is0" Margin="Margin.Is0" >
-               
-                <PCalender  Date="Date" DateChanged="OnDateChanged" SpecialDays="SpecialDays" RenderToday="RenderToday" />
+            <DropdownMenu Padding="Padding.Is0" Margin="Margin.Is0">
+              
+                    <PCalender Date="Date" DateChanged="@OnDateChanged" SpecialDays="SpecialDays" RenderToday="RenderToday" />
                 
+
+
             </DropdownMenu>
         </Dropdown>
     </Addon>
@@ -26,7 +28,11 @@
     Dropdown _dropdown;
 
     [Parameter]
-    public DateTime Date { get; set; } = DateTime.Now;
+    public DateTime Date { get; set; }
+
+
+
+    // DateTime? _date;
 
     [Parameter]
     public EventCallback<DateTime> DateChanged { get; set; }
@@ -38,7 +44,15 @@
     public Size Size { get; set; } = Size.Small;
 
     [Parameter]
+    public string EmptyDateMessage { get; set; } = "";
+
+    [Parameter]
     public bool RenderToday { get; set; } = true;
+
+    [Parameter]
+    public Func<DateTime, string> Formatter { get; set; } = (date) => date == DateTime.MinValue ? string.Empty : date.ToShortPersianDateString();
+
+
 
     [Parameter]
     public IEnumerable<SpecialDay> SpecialDays { get; set; }=new List<SpecialDay>();
@@ -47,12 +61,21 @@
     {
         if(Disabled) return;
         _dropdown.Toggle();
-          
+
     }
 
     private async Task OnDateChanged(DateTime arg)
     {
+        // _date = arg;
         await DateChanged.InvokeAsync(arg);
+    }
+
+
+
+    private string GetPlaceHolderDateString(DateTime? date)
+    {
+        if (date is null) return EmptyDateMessage;
+        return date == DateTime.MinValue ? EmptyDateMessage : string.Empty;
     }
 
 }
