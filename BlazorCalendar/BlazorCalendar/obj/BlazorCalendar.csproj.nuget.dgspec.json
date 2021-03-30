@@ -5,7 +5,7 @@
   },
   "projects": {
     "C:\\Projects\\Components\\BlazorCalendar\\BlazorCalendar\\BlazorCalendar.csproj": {
-      "version": "1.2.0",
+      "version": "1.2.2",
       "restore": {
         "projectUniqueName": "C:\\Projects\\Components\\BlazorCalendar\\BlazorCalendar\\BlazorCalendar.csproj",
         "projectName": "BlazorisePersianCalendar",

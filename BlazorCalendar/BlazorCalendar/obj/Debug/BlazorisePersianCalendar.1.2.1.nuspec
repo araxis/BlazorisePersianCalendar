@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>BlazorisePersianCalendar</id>
+    <version>1.2.1</version>
+    <authors>aida rezapour,meisam alifallahi</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/araxis/BlazorisePersianCalender</projectUrl>
+    <description>Persian Date Calender &amp; Persian DatePicker View for Blazorise</description>
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="Blazorise" version="0.9.2.5" exclude="Build,Analyzers" />
+        <dependency id="DNTPersianUtils.Core" version="3.9.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Components.Web" version="5.0.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Projects\Components\BlazorCalendar\BlazorCalendar\bin\Debug\net5.0\BlazorCalendar.dll" target="lib\net5.0\BlazorCalendar.dll" />
+    <file src="C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\staticwebassets\msbuild.BlazorisePersianCalendar.Microsoft.AspNetCore.StaticWebAssets.props" target="build\Microsoft.AspNetCore.StaticWebAssets.props" />
+    <file src="C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\staticwebassets\msbuild.build.BlazorisePersianCalendar.props" target="build\BlazorisePersianCalendar.props" />
+    <file src="C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\staticwebassets\msbuild.buildMultiTargeting.BlazorisePersianCalendar.props" target="buildMultiTargeting\BlazorisePersianCalendar.props" />
+    <file src="C:\Projects\Components\BlazorCalendar\BlazorCalendar\obj\Debug\net5.0\staticwebassets\msbuild.buildTransitive.BlazorisePersianCalendar.props" target="buildTransitive\BlazorisePersianCalendar.props" />
+    <file src="C:\Projects\Components\BlazorCalendar\BlazorCalendar\wwwroot\background.png" target="staticwebassets\background.png" />
+    <file src="C:\Projects\Components\BlazorCalendar\BlazorCalendar\wwwroot\exampleJsInterop.js" target="staticwebassets\exampleJsInterop.js" />
+  </files>
+</package>

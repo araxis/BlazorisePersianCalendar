@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <PackageId>BlazorisePersianCalendar</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.2.2</Version>
     <Authors>aida rezapour,meisam alifallahi</Authors>
     <Company>ms</Company>
     <Product>Blazorise Persian Calendar</Product>

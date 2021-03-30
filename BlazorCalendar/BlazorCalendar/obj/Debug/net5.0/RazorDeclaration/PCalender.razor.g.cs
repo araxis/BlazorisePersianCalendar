@@ -77,6 +77,11 @@ using DNTPersianUtils.Core;
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        if (Date == DateTime.MinValue)
+        {
+            Date = DateTime.Now;
+            
+        }
 
         var pc = new PersianCalendar();
         var month= pc.GetMonth(Date);
